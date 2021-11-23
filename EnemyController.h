@@ -16,6 +16,7 @@ public:
     Sprite3D* getMonsterSprite3D() { return m_mosterSpr3D; }
     Sprite3D* getBaseSprite3D() { return m_baseSpr3D; }
     float   getDeadRate() { return m_deadrate; }
+    int     getScore() { return m_score; }
 
     void playAnimate(EnemySetting::AnimType type, bool loop, Action* callback = nullptr);
 

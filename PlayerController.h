@@ -12,8 +12,9 @@ spr3D = Sprite3D::create(sprData.c3bPath);\
 spr3D->setPosition3D(sprData.position);\
 spr3D->setRotation3D(sprData.rotation);\
 spr3D->setScale(sprData.scale);\
-spr3D->setCameraMask((unsigned short)CameraFlag::USER1);\
+spr3D->setCameraMask((unsigned short)CameraFlag::USER1);
 
+const float DEFULT_BULLET_SHOOT_TIME = 0.5f;
 
 struct settingData 
 {
@@ -62,6 +63,7 @@ public:
 	Sprite3D*	getSprite3D() { return m_sprPlayer; }
 	bool		getShootFlag() { return m_shootCoolDown; }
 	void		changeShootFlag() {	m_shootCoolDown = !m_shootCoolDown;	}
+	void		setShootFlag(bool inputBool) { m_shootCoolDown = inputBool; }
 	void		playAttackAnim();
 
 private:
@@ -73,9 +75,11 @@ private:
 class WeaponNode : public cocos2d::Node
 {
 public:
-	WeaponNode();
-	void moveToTarget(float deadrate, EnemyNode* targetEnemy, Node* enemyLayer);
+	WeaponNode(float _shootTime = DEFULT_BULLET_SHOOT_TIME);
+	void moveToTarget(Vec3 targetPosition, std::function<void()> callFunc/*float deadrate, EnemyNode* targetEnemy, Node* enemyLayer*/);
+	float getShootTime() { return m_shootTime; };
 private:
+	float		m_shootTime;
 	Sprite3D*	m_sprStone;
 	Sprite3D*	m_sprFire;
 };

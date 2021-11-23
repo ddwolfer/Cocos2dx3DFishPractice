@@ -49,17 +49,17 @@ namespace EnemySetting
 	};
 	const std::map<AnimType, AnimaInfo> knightAnim = {
 		{ AnimType::idle,	{0.f,		1.33f} },
-		{ AnimType::hit,	{5.33f,		5.83f} },
+		{ AnimType::hit,	{5.37f,		5.83f} },
 		{ AnimType::dead,	{13.33f,	13.83f} }
 	};
 	const std::map<AnimType, AnimaInfo> brickAnim = {
 		{ AnimType::idle,	{1.23f,		1.26f} },
-		{ AnimType::hit,	{3.9f,		3.93f} },
+		{ AnimType::hit,	{1.23f,		1.26f} }, // 原本的設定{ AnimType::hit,	{3.9f,		3.93f}
 		{ AnimType::dead,	{1.26f,		6.73f} }
 	};
 	const std::map<AnimType, AnimaInfo> woodAnim = {
 		{ AnimType::idle,	{5.5f,		5.53f} },
-		{ AnimType::hit,	{2.5f,		2.53f} },
+		{ AnimType::hit,	{5.5f,		5.53f} }, // 原本的設定 AnimType::hit,	{2.5f,		2.53f}
 		{ AnimType::dead,	{1.33f,		5.53f} }
 	};
 	//哥布林
@@ -72,7 +72,7 @@ namespace EnemySetting
 		Vec3(0.f,0.f,0.f),
 		1.5f,
 		1.f,
-		0.8f,
+		0.5f,
 		1000,
 		goblinAnim,
 		woodAnim
@@ -87,7 +87,7 @@ namespace EnemySetting
 		Vec3(0.f,0.f,0.f),
 		1.5f,
 		1.f,
-		0.8f,
+		0.25f,
 		2000,
 		knightAnim,
 		brickAnim
