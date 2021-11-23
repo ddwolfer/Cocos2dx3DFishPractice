@@ -17,6 +17,7 @@ void PlayerNode::playAttackAnim()
 	auto playerAnimate = Animate3D::create(playerAnimation);
 	// 炮擊的火花動畫&Sprite3D
 	SET_SETTING(m_sprBulletDegg, bulletDeggData)
+	m_sprBulletDegg->setBlendFunc(BlendFunc::ADDITIVE);
 
 	auto bulletDeggAnimation = Animation3D::create(bulletDeggData.c3bPath);
 	auto bulletDeggAnimate = Animate3D::create(bulletDeggAnimation);
@@ -42,9 +43,11 @@ void PlayerNode::playAttackAnim()
 WeaponNode::WeaponNode(float _shootTime)
 {
 	// 砲彈基本設定
-	SET_SETTING(m_sprStone, weaponStoneData)
+	SET_SETTING(m_sprStone, weaponStoneData);
 	// 火焰基本設定
-	SET_SETTING(m_sprFire, weaponFireData)
+	SET_SETTING(m_sprFire, weaponFireData);
+	
+	m_sprFire->setBlendFunc(BlendFunc::ADDITIVE);
 
 	m_sprStone->addChild(m_sprFire);
 	this->addChild(m_sprStone);

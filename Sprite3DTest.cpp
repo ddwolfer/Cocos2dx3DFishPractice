@@ -2,7 +2,7 @@
 #define __3DTEST__
 
 #include "Sprite3DTest.h"
-#include "cocostudio//CocoStudio.h"
+
 #include "extensions/cocos-ext.h"
 #include "ui/CocosGUI.h"
 
@@ -44,10 +44,11 @@ bool Sprite3DTest::init()
     log("init background success");
     // 載入獎勵圈圈
     m_rewardCircle = CSLoader::createNode("AnimationNode/Reward_Big.csb");
-    
+    m_rewardAction = CSLoader::createTimeline("AnimationNode/Reward_Big.csb");
     m_rewardCircle->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     m_rewardCircle->setVisible(false);
     rootNode->addChild(m_rewardCircle);
+    m_rewardCircle->runAction(m_rewardAction);
     // 生成玩家
     PlayerNode* playerNode = new PlayerNode();
     m_player = playerNode;
@@ -145,7 +146,7 @@ void Sprite3DTest::showRewardCircle()
 // 播放獎勵動畫
 void Sprite3DTest::playRewardAnim(std::string animName)
 {
-    auto m_rewardAction = CSLoader::createTimeline("AnimationNode/Reward_Big.csb");
+    
     if (animName == "start") 
     {
         m_rewardAction->play("start", false);
@@ -163,10 +164,10 @@ void Sprite3DTest::playRewardAnim(std::string animName)
     }
     else if (animName == "quit")
     {
+        m_rewardAction->clearLastFrameCallFunc();
         m_rewardCircle->setVisible(false);
         setRewardFalg(false);
-    }
-    m_rewardCircle->runAction(m_rewardAction);
+    } 
 }
 // 設定獎勵數值
 void Sprite3DTest::setRewardValue(int inputValue)

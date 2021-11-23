@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "EnemyController.h"
 #include "PlayerController.h"
+#include "cocostudio//CocoStudio.h"
 
 USING_NS_CC;
 
@@ -55,7 +56,7 @@ private:
     EnemyNode*      m_enemyNode;
     PlayerNode*     m_player;
     WeaponNode*     m_weapon;
-    //cocostudio::timeline::ActionTimelineNode* m_rewardAction;
+    cocostudio::timeline::ActionTimeline* m_rewardAction;
 
     bool        m_fireBullet;
     bool        m_rewardFalg;
