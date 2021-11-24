@@ -75,7 +75,7 @@ namespace EnemySetting
 		Vec3(0.f,0.f,0.f),
 		1.5f,
 		1.f,
-		0.5f,
+		0.25f,
 		1000,
 		goblinAnim,
 		woodAnim
@@ -90,7 +90,7 @@ namespace EnemySetting
 		Vec3(0.f,0.f,0.f),
 		1.5f,
 		1.f,
-		0.25f,
+		0.1f,
 		2000,
 		knightAnim,
 		brickAnim

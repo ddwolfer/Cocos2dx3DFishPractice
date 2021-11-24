@@ -53,6 +53,7 @@ private:
     std::map<EventKeyboard::KeyCode, bool> m_keys;
     Node*           m_rewardCircle;
     Node*           m_enemyLayer;
+    Node*           m_hudLayer;
     EnemyNode*      m_enemyNode;
     PlayerNode*     m_player;
     WeaponNode*     m_weapon;
@@ -61,6 +62,7 @@ private:
     bool        m_fireBullet;
     bool        m_rewardFalg;
     int         m_createCount; 
+    int         m_totalScore;
 };
 
 #endif // __SPRITE_3DTEST__

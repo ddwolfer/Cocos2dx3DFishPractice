@@ -12,10 +12,21 @@ PlayerNode::PlayerNode()
 
 void PlayerNode::playAttackAnim()
 {
+	// 玩家(大砲)
 	// 大砲攻擊動畫
 	auto playerAnimation = Animation3D::create(playerData.c3bPath);
 	auto playerAnimate = Animate3D::create(playerAnimation);
-	// 炮擊的火花動畫&Sprite3D
+	// 砲擊動畫結束後 重新允許射擊
+	auto shootCoolDownEnd = CallFunc::create([&]() {
+		setShootFlag(true);
+		}
+	);
+	// 進行行動
+	auto playerSeqAction = Sequence::create(playerAnimate, shootCoolDownEnd, NULL);
+	m_sprPlayer->runAction(playerSeqAction);
+
+	// 砲擊火花
+	// Sprite and Animation
 	SET_SETTING(m_sprBulletDegg, bulletDeggData)
 	m_sprBulletDegg->setBlendFunc(BlendFunc::ADDITIVE);
 	auto bulletDeggAnimation = Animation3D::create(bulletDeggData.c3bPath);
@@ -23,18 +34,9 @@ void PlayerNode::playAttackAnim()
 	m_sprPlayer->addChild(m_sprBulletDegg);
 	// 砲擊結束 火光消失
 	auto deleteBulletDegg = RemoveSelf::create();
-
-	// 砲擊動畫結束後 重新允許射擊
-	auto shootCoolDownEnd = CallFunc::create([&]() {
-		setShootFlag(true);
-		}
-	);
 	// 進行行動
 	auto bulletSeqAction = Sequence::create(bulletDeggAnimate, deleteBulletDegg, NULL);
-	auto playerSeqAction = Sequence::create(playerAnimate, shootCoolDownEnd, NULL);
-
 	m_sprBulletDegg->runAction(bulletSeqAction);
-	m_sprPlayer->runAction(playerSeqAction);
 }
 
 WeaponNode::WeaponNode(float _shootTime)

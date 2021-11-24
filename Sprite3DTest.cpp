@@ -35,6 +35,7 @@ bool Sprite3DTest::init()
     srand(time(0));
     // 變數初始化
     m_createCount = 0;
+    m_totalScore = 0;
     m_fireBullet = false;
     m_rewardFalg = false;
     //載入場景
@@ -42,12 +43,25 @@ bool Sprite3DTest::init()
     this->addChild(rootNode);
     m_enemyLayer = rootNode->getChildByName("Enemy");
     log("init background success");
+    // 錢錢
+    m_hudLayer = CSLoader::createNode("AnimationNode/HUD.csb");
+    //m_HUDLayer->setCameraMask((unsigned int)CameraFlag::USER1);
+    auto HUDAnim  = CSLoader::createTimeline("AnimationNode/HUD.csb");
+    m_hudLayer->setPosition(0,0);
+    m_hudLayer->runAction(HUDAnim);
+    this->addChild(m_hudLayer,10);
+    m_hudLayer->enumerateChildren("Score", [=](Node* foundNode)->bool {
+        static_cast<ui::TextBMFont*>(foundNode)->setString(std::to_string(0));
+        return true;
+        });
+    
     // 載入獎勵圈圈
     m_rewardCircle = CSLoader::createNode("AnimationNode/Reward_Big.csb");
     m_rewardAction = CSLoader::createTimeline("AnimationNode/Reward_Big.csb");
     m_rewardCircle->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     m_rewardCircle->setVisible(false);
     rootNode->addChild(m_rewardCircle);
+    //m_rewardAction->gotoFrameAndPlay(0, true);
     m_rewardCircle->runAction(m_rewardAction);
     // 生成玩家
     PlayerNode* playerNode = new PlayerNode();
@@ -57,9 +71,7 @@ bool Sprite3DTest::init()
     log("init player(cannon) success");
     // 生成敵人
     EnemyController* enemyController = EnemyController::getInstance();
-    auto enemyNode = enemyController->getNewEnemy(EnemySetting::MosterType::goblin);
-    m_enemyNode = enemyNode;
-    m_enemyLayer->addChild(enemyNode, 0, ENEMY_NODE_NAME);
+    generateNewEnemy();
     log("init enemy(should be goblin) success");
     // 鍵盤偵測
     auto Keylistener = EventListenerKeyboard::create();
@@ -131,7 +143,10 @@ void Sprite3DTest::enemyDead()
 void Sprite3DTest::generateNewEnemy()
 {
     // 移除
-    m_enemyNode->removeFromParent();
+    if (m_enemyNode != nullptr) 
+    {
+        m_enemyNode->removeFromParent();
+    }
     // 新增
     auto generateNewEnemy = EnemyController::getInstance()->getNewEnemy((EnemySetting::MosterType)((int)(rand() % 2)));
     m_enemyNode = generateNewEnemy;
@@ -177,6 +192,11 @@ void Sprite3DTest::setRewardValue(int inputValue)
     // 找到設定數值的"Coney_Num"，並改變字串
     m_rewardCircle->enumerateChildren("//Coney_Num", [=](Node* foundNode) -> bool {
         static_cast<ui::TextBMFont*>(foundNode)->setString(std::to_string(inputValue));
+        return true;
+        });
+    m_totalScore += inputValue;
+    m_hudLayer->enumerateChildren("//Score", [=](Node* foundNode) -> bool {
+        static_cast<ui::TextBMFont*>(foundNode)->setString(std::to_string(m_totalScore));
         return true;
         });
 }
