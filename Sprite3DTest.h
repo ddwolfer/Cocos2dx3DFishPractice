@@ -31,7 +31,7 @@ public:
     void onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event);
     //敵人判定事件
     void checkEnemyDeath();
-    void enemyChangeHitToIdle();
+    void enemyHit();
     void enemyDead();
     void generateNewEnemy();
     // 獎勵事件

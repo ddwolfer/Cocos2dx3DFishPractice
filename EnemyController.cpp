@@ -72,8 +72,6 @@ void EnemyNode::playAnimate(EnemySetting::AnimType type, bool loop, Action* call
 // 初始化敵人設定
 EnemyController::EnemyController()
 {
-	m_enemySettingList.insert(std::pair<EnemySetting::MosterType, EnemySetting::EnemyData>(
-		EnemySetting::MosterType::goblin, EnemySetting::goblinData));
 	m_enemySettingList[EnemySetting::MosterType::goblin] = EnemySetting::goblinData;
 	m_enemySettingList[EnemySetting::MosterType::knight] = EnemySetting::knightData;
 }

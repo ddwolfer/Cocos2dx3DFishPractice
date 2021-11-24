@@ -29,7 +29,6 @@ private:
     std::string m_baseC3bPath;
     std::map<EnemySetting::AnimType, EnemySetting::AnimaInfo>    m_monsterAnimInfo;
     std::map<EnemySetting::AnimType, EnemySetting::AnimaInfo>    m_baseAnimInfo;
-
 };
 
 class EnemyController : public cocos2d::Node
@@ -39,9 +38,10 @@ public:
     static EnemyController* getInstance();
     static std::map<EnemySetting::MosterType, EnemySetting::EnemyData> getEnemySettingList() { return m_enemySettingList; }
 private:
+    static std::map<EnemySetting::MosterType, EnemySetting::EnemyData> m_enemySettingList;
     EnemyController();
     static EnemyController* m_instance;
-    static std::map<EnemySetting::MosterType, EnemySetting::EnemyData> m_enemySettingList;
+    
 };
 
 #endif // !__ENEMY_CONTROLLER__

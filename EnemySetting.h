@@ -7,17 +7,20 @@ USING_NS_CC;
 
 namespace EnemySetting 
 {
+	// 怪物型態
 	enum class MosterType
 	{
 		goblin = 0,
 		knight = 1
 	};
+	// 動畫狀態
 	enum class AnimType
 	{
 		idle = 0,
 		hit = 1,
 		dead = 2
 	};
+	// 動畫起迄
 	struct AnimaInfo
 	{
 		float Start;
@@ -26,18 +29,18 @@ namespace EnemySetting
 	// 敵人資料結構
 	struct EnemyData
 	{
-		std::string     monsterC3bPath;
-		std::string     baseC3bPath;
-		Vec3            monsterPosition;
-		Vec3            basePosition;
-		Vec3            monsterRotation;
-		Vec3            baseRotation;
-		float			monsterScale;
-		float			baseScale;
-		float           deadRate;
-		int				score;
-		std::map<AnimType, AnimaInfo>    monsterAnimInfo;
-		std::map<AnimType, AnimaInfo>    baseAnimInfo;
+		std::string     monsterC3bPath;						// 怪物路徑
+		std::string     baseC3bPath;						// 基底路徑
+		Vec3            monsterPosition;					// 怪物位置
+		Vec3            basePosition;						// 基底位置
+		Vec3            monsterRotation;					// 怪物旋轉
+		Vec3            baseRotation;						// 基底旋轉
+		float			monsterScale;						// 怪物縮放
+		float			baseScale;							// 基底縮放
+		float           deadRate;							// 死亡概率(0~1)
+		int				score;								// 擊殺後的分數
+		std::map<AnimType, AnimaInfo>    monsterAnimInfo;	// 怪物的動畫資訊
+		std::map<AnimType, AnimaInfo>    baseAnimInfo;		// 基底的動畫資訊
 	};
 
 	// 設定敵人資訊
@@ -54,12 +57,12 @@ namespace EnemySetting
 	};
 	const std::map<AnimType, AnimaInfo> brickAnim = {
 		{ AnimType::idle,	{1.23f,		1.26f} },
-		{ AnimType::hit,	{1.23f,		1.26f} }, // 原本的設定{ AnimType::hit,	{3.9f,		3.93f}
+		{ AnimType::hit,	{1.23f,		1.26f} }, // 也可以改{ AnimType::hit,	{3.9f,		3.93f}
 		{ AnimType::dead,	{1.26f,		6.73f} }
 	};
 	const std::map<AnimType, AnimaInfo> woodAnim = {
 		{ AnimType::idle,	{5.5f,		5.53f} },
-		{ AnimType::hit,	{5.5f,		5.53f} }, // 原本的設定 AnimType::hit,	{2.5f,		2.53f}
+		{ AnimType::hit,	{5.5f,		5.53f} }, // 也可以改{ AnimType::hit,	{2.5f,		2.53f}
 		{ AnimType::dead,	{1.33f,		5.53f} }
 	};
 	//哥布林

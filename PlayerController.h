@@ -52,9 +52,11 @@ const settingData weaponFireData =
 	Vec3(-90,90,0),
 	1
 };
-
-
-
+//
+// 玩家(大砲)
+// 變數: 大砲Sprite、發射火花Sprite、發射冷卻時間
+// 函式: 執行大砲動畫
+//
 class PlayerNode : public cocos2d::Node
 {
 public:
@@ -71,7 +73,11 @@ private:
 	Sprite3D*	m_sprBulletDegg; //可以刪掉 function 內用就好
 	bool		m_shootCoolDown;
 };
-
+//
+// 子彈用class
+// 變數: 子彈Sprite、火花Sprite
+// 函式: 子彈移動並處理傳進的std::function
+//
 class WeaponNode : public cocos2d::Node
 {
 public:

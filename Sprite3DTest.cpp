@@ -89,12 +89,11 @@ void Sprite3DTest::checkEnemyDeath()
 {
     log("start check dead rate");
     float randomBulletDeadRate = (float)rand() / RAND_MAX;
-    log("enemy dead rate now : %f\nplayer get rate: %f", m_enemyNode->getDeadRate(), randomBulletDeadRate);
     // 敵人存活
     if (randomBulletDeadRate > m_enemyNode->getDeadRate())
     {
         log("enemy live, shoot more bullet!");
-        enemyChangeHitToIdle();
+        enemyHit();
     }
     // 敵人死亡
     else
@@ -105,7 +104,7 @@ void Sprite3DTest::checkEnemyDeath()
     return;
 }
 // 子彈判定為存活時，敵人撥放擊中動畫後回到idle
-void Sprite3DTest::enemyChangeHitToIdle()
+void Sprite3DTest::enemyHit()
 {
     log("enemy should play hit animation, then back to idle status.");
     auto animTypeHitBackToIdle = CallFunc::create([=]() {
@@ -116,20 +115,24 @@ void Sprite3DTest::enemyChangeHitToIdle()
     m_enemyNode->playAnimate(EnemySetting::AnimType::hit, false, animTypeHitBackToIdle);
 }
 // 子彈判定為死亡時，敵人需死亡，然後創建新的敵人
-// (目前TYPE為 {0:哥布林, 1:騎士})
+// (目前現有的TYPE為 {0:哥布林, 1:騎士})
 void Sprite3DTest::enemyDead()
 {
+    // 設定分數
+    setRewardValue(m_enemyNode->getScore());
+    // 死亡動作
     log("enemy play dead animation, then remove itself.\n");
     Action* deadCallBack = CallFunc::create(std::bind(&Sprite3DTest::generateNewEnemy, this));
     m_enemyNode->playAnimate(EnemySetting::AnimType::dead, false, deadCallBack);
     //跳獎勵
-    setRewardValue(m_enemyNode->getScore());
     showRewardCircle();
 }
 // 創建新的敵人
 void Sprite3DTest::generateNewEnemy()
 {
+    // 移除
     m_enemyNode->removeFromParent();
+    // 新增
     auto generateNewEnemy = EnemyController::getInstance()->getNewEnemy((EnemySetting::MosterType)((int)(rand() % 2)));
     m_enemyNode = generateNewEnemy;
     m_enemyLayer->addChild(generateNewEnemy, 0, ENEMY_NODE_NAME);
@@ -141,12 +144,10 @@ void Sprite3DTest::showRewardCircle()
     m_rewardCircle->setVisible(true);
     setRewardFalg(true);
     playRewardAnim("start");
-
 }
 // 播放獎勵動畫
 void Sprite3DTest::playRewardAnim(std::string animName)
-{
-    
+{    
     if (animName == "start") 
     {
         m_rewardAction->play("start", false);
@@ -162,6 +163,7 @@ void Sprite3DTest::playRewardAnim(std::string animName)
         m_rewardAction->play("end", false);
         m_rewardAction->setLastFrameCallFunc(std::bind(&Sprite3DTest::playRewardAnim, this, "quit"));
     }
+    // 三段動畫結束後，隱藏獎圈並結束動作
     else if (animName == "quit")
     {
         m_rewardAction->clearLastFrameCallFunc();
@@ -172,6 +174,7 @@ void Sprite3DTest::playRewardAnim(std::string animName)
 // 設定獎勵數值
 void Sprite3DTest::setRewardValue(int inputValue)
 {
+    // 找到設定數值的"Coney_Num"，並改變字串
     m_rewardCircle->enumerateChildren("//Coney_Num", [=](Node* foundNode) -> bool {
         static_cast<ui::TextBMFont*>(foundNode)->setString(std::to_string(inputValue));
         return true;
@@ -183,7 +186,7 @@ void Sprite3DTest::update(float dt)
     // 冷卻時間過 & 觸控點下
     if (m_fireBullet && m_player->getShootFlag() && !m_rewardFalg)
     {
-        // 射擊過程中，暫停射擊功能
+        // 射擊冷卻中，暫停射擊功能
         m_player->setShootFlag(false);
         m_player->playAttackAnim();
         m_weapon = new WeaponNode();
@@ -217,7 +220,7 @@ bool Sprite3DTest::onTouchMoved(Touch* touch, Event* event)
 // 鍵盤案鍵按下
 void Sprite3DTest::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
-    //底下為測試死亡
+    //以下為測試用
     CCLOG("key pressed");
     m_keys[keyCode] = true;
     // 敵人受傷

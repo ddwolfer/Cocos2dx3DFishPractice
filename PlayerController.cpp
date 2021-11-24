@@ -18,16 +18,13 @@ void PlayerNode::playAttackAnim()
 	// 炮擊的火花動畫&Sprite3D
 	SET_SETTING(m_sprBulletDegg, bulletDeggData)
 	m_sprBulletDegg->setBlendFunc(BlendFunc::ADDITIVE);
-
 	auto bulletDeggAnimation = Animation3D::create(bulletDeggData.c3bPath);
 	auto bulletDeggAnimate = Animate3D::create(bulletDeggAnimation);
-
 	m_sprPlayer->addChild(m_sprBulletDegg);
-
 	// 砲擊結束 火光消失
 	auto deleteBulletDegg = RemoveSelf::create();
 
-	// 砲擊結束後 重新允許射擊
+	// 砲擊動畫結束後 重新允許射擊
 	auto shootCoolDownEnd = CallFunc::create([&]() {
 		setShootFlag(true);
 		}
@@ -46,7 +43,7 @@ WeaponNode::WeaponNode(float _shootTime)
 	SET_SETTING(m_sprStone, weaponStoneData);
 	// 火焰基本設定
 	SET_SETTING(m_sprFire, weaponFireData);
-	
+	// 去掉黑邊
 	m_sprFire->setBlendFunc(BlendFunc::ADDITIVE);
 
 	m_sprStone->addChild(m_sprFire);
@@ -55,13 +52,13 @@ WeaponNode::WeaponNode(float _shootTime)
 }
 void WeaponNode::moveToTarget(Vec3 targetPosition, std::function<void()> callFunc)
 {
+	// 移動子彈
 	auto weaponMoveTo = MoveTo::create(m_shootTime, targetPosition);
-
+	// 子彈變速
 	auto weaponMoveEase = EaseIn::create(weaponMoveTo, 2);
-
+	// 子彈移除
 	auto removeWeapon = RemoveSelf::create();
-
+	// 串聯子彈動作
 	auto weaponSeqAction = Sequence::create(weaponMoveEase, CallFunc::create(callFunc), removeWeapon, NULL);
-
 	m_sprStone->runAction(weaponSeqAction);
 }
